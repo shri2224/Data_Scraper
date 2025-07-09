@@ -21,7 +21,7 @@ def selenium_extractor(link, filename):
     """Extracts data from Google Maps and saves it to CSV."""
     start_time = time.time()
 
-    # ✅ Use your actual ChromeDriver path here
+    #  Use your actual ChromeDriver path here
     chromedriver_path = "C:/chromedriver_win32/chromedriver.exe"
     service = Service(chromedriver_path)
     browser = webdriver.Chrome(service=service)
@@ -106,7 +106,7 @@ def selenium_extractor(link, filename):
         print(f"[✓] Script finished in {round(end_time - start_time, 2)} seconds")
 
 
-# 🟩 Entry point
+#  Entry point
 if __name__ == "__main__":
     print("[*] Starting Google Maps scraper...")
 
