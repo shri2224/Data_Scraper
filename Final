@@ -1,0 +1,99 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver import ActionChains
+from selenium.webdriver.common.actions.wheel_input import ScrollOrigin
+from bs4 import BeautifulSoup
+import time
+import pandas as pd
+
+def create_empty_csv(filename):
+    df = pd.DataFrame(columns=['Name', 'Address', 'Website', 'Phone number'])
+    df.to_csv(filename, index=False)
+    print(f"[+] CSV file '{filename}' created.")
+
+def test_click_scroll():
+    chromedriver_path = "C:/chromedriver_win32/chromedriver.exe"
+    service = Service(chromedriver_path)
+    browser = webdriver.Chrome(service=service)
+    print("[+] Browser launched")
+
+    filename = "restaurantstest3_data.csv"
+    create_empty_csv(filename)
+    unique_names = set()
+
+    try:
+        browser.get("https://www.google.com/maps/search/restaurants+in+chennai/")
+        print("[+] Navigated to Google Maps")
+        time.sleep(10)
+
+        last_seen_jsactions = set()
+        action = ActionChains(browser)
+        le = 0
+
+        while True:
+            tiles = browser.find_elements(By.CLASS_NAME, "Nv2PK")
+            print(f"[*] Found {len(tiles)} tiles")
+
+            new_jsactions = set()
+            for tile in tiles:
+                jsaction = tile.get_attribute("jsaction")
+                if jsaction not in last_seen_jsactions:
+                    try:
+                        print(f"[*] Clicking tile with jsaction: {jsaction}")
+                        anchor = tile.find_element(By.CSS_SELECTOR, "a.hfpxzc")
+                        browser.execute_script("arguments[0].scrollIntoView(true);", anchor)
+                        time.sleep(1)
+                        browser.execute_script("arguments[0].click();", anchor)
+                        time.sleep(3)
+
+                        source = browser.page_source
+                        soup = BeautifulSoup(source, 'html.parser')
+
+                        name_html = soup.find('h1', {"class": "DUwDvf lfPIob"})
+                        name = name_html.text.strip() if name_html else "Not available"
+
+                        address_button = soup.select_one('button[data-item-id="address"] div.Io6YTe.fontBodyMedium.kR99db.fdkmkc')
+                        address = address_button.text.strip() if address_button else "Not available"
+
+                        website_html = soup.find('a', {"data-item-id": "authority"})
+                        website = website_html['href'].strip() if website_html else "Not available"
+
+                        phone_button = soup.select_one('button[data-item-id^="phone:"] div.Io6YTe.fontBodyMedium.kR99db.fdkmkc')
+                        phone = phone_button.text.strip() if phone_button else "Not available"
+
+                        print(f"[✓] {name} | {address} | {website} | {phone}")
+
+                        # Save the row regardless of content
+                        df = pd.DataFrame([(name, address, website, phone)], columns=['Name', 'Address', 'Website', 'Phone number'])
+                        df.to_csv(filename, index=False, mode='a', header=False, encoding='utf-8')
+
+                        new_jsactions.add(jsaction)
+                        unique_names.add(name)
+
+                    except Exception as e:
+                        print(f"[!] Error clicking tile: {e}")
+
+            if not new_jsactions:
+                print("[~] No new jsactions found. Scrolling...")
+                try:
+                    last_tile = tiles[-1]
+                    browser.execute_script("arguments[0].scrollIntoView(true);", last_tile)
+                    time.sleep(2)
+                except Exception as e:
+                    print(f"[!] Error scrolling: {e}")
+
+                le += 1
+                if le > 20:
+                    print("[!] Max scroll attempts reached. Ending.")
+                    break
+            else:
+                last_seen_jsactions.update(new_jsactions)
+                le = 0
+
+    finally:
+        print("[+] Test complete, closing browser")
+        browser.quit()
+
+if __name__ == "__main__":
+    test_click_scroll()
