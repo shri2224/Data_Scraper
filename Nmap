@@ -1,0 +1,14 @@
+# find live hosts in the subnet
+sudo nmap -sn 192.168.1.0/24
+
+# scans common camera ports, shows services/versions, only prints open hosts
+sudo nmap -T4 -p 80,443,554,8000,8080,8081,8554 --open -sV 192.168.1.0/24
+
+# http enumeration + try to discover RTSP URLs (good first step)
+sudo nmap -T4 -p 80,443,554,8000,8080,8554 \
+  --script http-enum,http-title,rtsp-url-brute,rtsp-methods \
+  192.168.1.0/24
+# checks for known default accounts on HTTP services (be careful; noisy)
+sudo nmap -T4 -p 80,443,8000,8080 --script http-default-accounts 192.168.1.0/24
+
+
