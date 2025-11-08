@@ -11,4 +11,21 @@ sudo nmap -T4 -p 80,443,554,8000,8080,8554 \
 # checks for known default accounts on HTTP services (be careful; noisy)
 sudo nmap -T4 -p 80,443,8000,8080 --script http-default-accounts 192.168.1.0/24
 
+https://youtu.be/YTlSkJqI1-M?si=dkY9qLxC5KqUPVz6
+
+https://maclookup.app/vendors/zhejiang-dahua-technology-co-ltd
+nmap -sn 192.168.1.0/24
+nmap -A ip
+nmap -sV -p 80,443,8080 ip
+nmap --script vuln ip
+nmap -sV -O --version-intensity 9 ip
+nmap -sC ip
+nmap --script http-Enum np
+nmap -T4 --traceroute ip
+nmap -sS -p- ip (ss=stealth)
+
+
+Apply display filters: ngap (for 5G) or gtp (for 4G/LTE).
+ip.addr == <TARGET_IP> and (ngap or pfcp or gtp) 5g 5g 4g
+
 
