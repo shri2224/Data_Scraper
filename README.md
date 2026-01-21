@@ -18,7 +18,7 @@ Saves data into a CSV file
 
 ▶️ **How It Works**
 
-Opens Google Maps with a restaurant search query ->
+Opens Google Maps with a search query (eg:restaurant in chennai) ->
 Detects search data for (eg:restaurant tiles) ->
 Clicks each new listing ->
 Extracts details from the place panel ->
