@@ -1,8 +1,8 @@
 **Google Maps Restaurant Scraper (Selenium + BeautifulSoup)**
 📌 **Overview**
 
-This project automates the extraction of restaurant details from Google Maps search results using Selenium and BeautifulSoup.
-It scrolls through listings, clicks each restaurant, extracts details, and stores them in a CSV file.
+This project automates the extraction of details from Google Maps search results using Selenium and BeautifulSoup.
+It scrolls through listings, clicks each search results, extracts details, and stores them in a CSV file.
 
 🎯 **Features**
 
@@ -12,9 +12,9 @@ Extracts:(
 Restaurant Name
 Address
 Website
-Phone Number
+Phone Number) ->
 Handles infinite scrolling
-Saves data into a CSV file)
+Saves data into a CSV file
 
 🛠️ **Tech Stack**
 
