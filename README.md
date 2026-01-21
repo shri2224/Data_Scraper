@@ -2,7 +2,7 @@
 📌 **Overview**
 
 This project automates the extraction of details from Google Maps search results using Selenium and BeautifulSoup.
-It scrolls through listings, clicks each search results, extracts details, and stores them in a CSV file.
+It scrolls through listings automatically, clicks each search results, extracts details, and stores them in a CSV file.
 
 🎯 **Features**
 
