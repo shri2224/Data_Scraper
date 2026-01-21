@@ -16,6 +16,15 @@ Phone Number) ->
 Handles infinite scrolling
 Saves data into a CSV file
 
+▶️ **How It Works**
+
+Opens Google Maps with a restaurant search query ->
+Detects search data for (eg:restaurant tiles) ->
+Clicks each new listing ->
+Extracts details from the place panel ->
+Appends results to CSV ->
+Scrolls until no new listings are found 
+
 🛠️ **Tech Stack**
 
 Python, 
